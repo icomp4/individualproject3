@@ -41,7 +41,7 @@ fun MazeGameContainer(
 ) {
     val gameState by viewModel.gameState.collectAsState()
 
-    // if the game is over, display the completed screen
+    // If the game is over, display the completed screen
     if (gameState.isCompleted) {
         CompletionScreen(
             moveCount = gameState.moveCount,
