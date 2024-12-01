@@ -14,3 +14,9 @@
 - If the move is invalid, the player doesn't move
 - Once the player reaches the end of the maze, the total number of moves is displayed, along with replay and home buttons
 - 3 mazes available (easy, medium, hard)
+
+# Storyboard
+![image](https://github.com/user-attachments/assets/8bd800c3-fbac-4486-9887-62e29a58c0b4)
+![image](https://github.com/user-attachments/assets/f504cb94-aa86-439e-a1c0-8f5bd3ff139f)
+![image](https://github.com/user-attachments/assets/7f8f7fe4-0918-4aac-a1d1-dc40d8614603)
+![image](https://github.com/user-attachments/assets/03df8bca-b3d3-4c46-b2fb-7a66fcc5a34d)
