@@ -24,6 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
+/**
+ * Screen that allows the user to login
+ * Logging in is currently not implemented, and the user can navigate to the game selection screen
+ * @param navController the navigation controller
+ */
 @Composable
 fun LoginScreen(navController: NavController){
     var email by remember { mutableStateOf("") }

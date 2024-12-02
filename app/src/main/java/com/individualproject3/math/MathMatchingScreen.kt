@@ -33,6 +33,10 @@ import androidx.compose.ui.unit.IntOffset
 import kotlin.math.roundToInt
 
 
+/**
+ * The MathMatchingScreen composable is the UI for the Math Matching game.
+ * It displays an equation with a missing operator, and the user must drag the correct operator that makes the equation true.
+ */
 @Composable
 fun MathMatchingScreen(
     navController: NavController,
@@ -41,9 +45,16 @@ fun MathMatchingScreen(
 ) {
     val context = LocalContext.current
 
+    // State for the dragged operator
     var draggedOperator by remember { mutableStateOf<String?>(null) }
+
+    // State for the current offset of the dragged operator
     var currentOffset by remember { mutableStateOf(Offset.Zero) }
+
+    // State for whether the operator is being dragged
     var isDragging by remember { mutableStateOf(false) }
+
+    // State for the position of the drop target
     var dropTargetPosition by remember { mutableStateOf(Offset.Zero) }
 
     val animatedOffset by animateOffsetAsState(
@@ -51,11 +62,13 @@ fun MathMatchingScreen(
         animationSpec = spring()
     )
 
+    // Generate a new equation and set the difficulty when the screen is launched
     LaunchedEffect(Unit) {
         viewModel.generateEquation()
         viewModel.setDifficulty(difficulty)
     }
 
+    // Lock the screen orientation to landscape
     DisposableEffect(Unit) {
         val activity = context.findActivity()
         val originalOrientation = activity.requestedOrientation
@@ -233,6 +246,13 @@ fun MathMatchingScreen(
         }
     }
 }
+
+/**
+ * The OperatorButton composable is a button that displays an operator.
+ * The button can be dragged by the user to the missing operator in the equation.
+ * @param operator The operator to display on the button
+ * @param backgroundColor The background color of the button
+ */
 @Composable
 private fun OperatorButton(
     operator: String,
@@ -285,6 +305,10 @@ private fun OperatorButton(
     }
 }
 
+/**
+ * Helper function for finding the current activity
+ * Used when locking the screen landscape
+ */
 private fun Context.findActivity(): Activity {
     var context = this
     while (context is ContextWrapper) {

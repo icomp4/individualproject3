@@ -6,13 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
-data class Equation(
-    val num1: Int,
-    val num2: Int,
-    val result: Int,
-    val correctOperator: String
-)
 
+/**
+ * ViewModel for the MathMatchingScreen.
+ * This ViewModel is responsible for generating equations and checking if the user's answer is correct.
+ * It is also responsible for determining the difficulty of the equations based on the user's selection.
+ * It also keeps track of the user's current and best streaks.
+ */
 class MathMatchingViewModel : ViewModel() {
     var currentEquation by mutableStateOf<Equation?>(null)
         private set
@@ -42,6 +42,12 @@ class MathMatchingViewModel : ViewModel() {
         generateEquation()
     }
 
+    /**
+     * Generates a new equation based on the current difficulty.
+     * Easy difficulty ranges from 1 to 10.
+     * Medium difficulty ranges from 1 to 50.
+     * Hard difficulty ranges from 1 to 100.
+     */
     fun generateEquation() {
         val range = difficultyRanges[currentDifficulty] ?: difficultyRanges["easy"]!!
         val operator = operators.random()
@@ -93,3 +99,17 @@ class MathMatchingViewModel : ViewModel() {
         }
     }
 }
+
+/**
+ * Data class representing an equation.
+ * @param num1 The first number in the equation.
+ * @param num2 The second number in the equation.
+ * @param result The result of the equation.
+ * @param correctOperator The correct operator for the equation.
+ */
+data class Equation(
+    val num1: Int,
+    val num2: Int,
+    val result: Int,
+    val correctOperator: String
+)

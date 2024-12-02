@@ -14,11 +14,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
+/**
+ * Screen that allows the user to select a difficulty for a game
+ * @param navController the navigation controller
+ * @param gameScreen the game screen to navigate to
+ */
 @Composable
 fun DifficultySelectionScreen(
     navController: NavController,
     gameScreen: String,
 ) {
+    // Get the pretty name of the game (e.g. "Math Matching" instead of "math_matching")
     val prettyGameName = gameScreen.getGamePretty()
 
     Column(
@@ -81,6 +87,10 @@ fun DifficultySelectionScreen(
     }
 }
 
+/**
+ * Gets the pretty name of the game based on the game screen
+ * @return the pretty name of the game
+ */
 fun String.getGamePretty(): String {
     return when (this) {
         "math_matching" -> "Math Matching"

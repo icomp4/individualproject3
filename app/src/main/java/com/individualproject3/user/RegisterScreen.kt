@@ -38,6 +38,12 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
+/**
+ * Screen that allows the user to register
+ * The user must enter their email, date of birth, and password
+ * Registration is currently not implemented, and the user can navigate to the login screen
+ * @param navController the navigation controller
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

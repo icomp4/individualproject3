@@ -16,6 +16,10 @@ import com.individualproject3.maze.MazeGameContainer
 import com.individualproject3.menu.DifficultySelectionScreen
 import com.individualproject3.menu.GameSelection
 
+/**
+ * The navigation controller of the app
+ * Determines the starting screen of the app, and the screens that can be navigated to
+ */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation(){

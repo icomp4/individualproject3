@@ -12,6 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.individualproject3.ui.theme.Individualproject3Theme
 
+/**
+ * The main activity of the app
+ * Opens the navigation screen which determines the screen to display
+ */
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {

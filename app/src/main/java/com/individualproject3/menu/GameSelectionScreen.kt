@@ -14,6 +14,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
+/**
+ * Screen that allows the user to select a game
+ * This screen is the first screen the user sees after logging in
+ * It allows the user to select between two games: Math Matching and Maze Game
+ * @param navController the navigation controller
+ */
 @Composable
 fun GameSelection(navController: NavController) {
     Column(
