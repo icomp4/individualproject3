@@ -14,7 +14,8 @@ import kotlinx.coroutines.flow.update
  * It also keeps track of the user's current move count and whether the game has been completed.
  */
 class MazeViewModel(
-    private val difficulty: String
+    private val difficulty: String,
+    private val soundManager: MazeSoundManager
 ) : ViewModel() {
 
     private val _gameState = MutableStateFlow(MazeGameState())
@@ -82,6 +83,7 @@ class MazeViewModel(
      * Moves the player in the specified direction.
      * If the move is valid, the player's position is updated.
      * If the player reaches the goal, the game is marked as completed.
+     * Plays the appropriate sound based on the move.
      */
     fun movePlayer(direction: Direction) {
         val currentState = _gameState.value
@@ -92,12 +94,20 @@ class MazeViewModel(
 
         if (isValidMove(newPosition, currentState.grid)) {
             _gameState.update { state ->
+                val reachedGoal = isGoalReached(newPosition, state.grid)
+                if (reachedGoal) {
+                    soundManager.playCompletionSound()
+                } else {
+                    soundManager.playMoveSound()
+                }
                 state.copy(
                     playerPosition = newPosition,
                     moveCount = state.moveCount + 1,
-                    isCompleted = isGoalReached(newPosition, state.grid)
+                    isCompleted = reachedGoal
                 )
             }
+        } else {
+            soundManager.playInvalidMoveSound()
         }
     }
 
@@ -156,11 +166,14 @@ data class MazeGameState(
  * MazeViewModelFactory class to create an instance of MazeViewModel with the specified difficulty level.
  * This class is used by the ViewModelProvider to create the ViewModel instance.
  */
-class MazeViewModelFactory(private val difficulty: String) : ViewModelProvider.Factory {
+class MazeViewModelFactory(
+    private val difficulty: String,
+    private val soundManager: MazeSoundManager
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MazeViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return MazeViewModel(difficulty) as T
+            return MazeViewModel(difficulty, soundManager) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

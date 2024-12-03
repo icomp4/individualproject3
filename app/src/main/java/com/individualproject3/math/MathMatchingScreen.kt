@@ -30,6 +30,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.unit.IntOffset
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlin.math.roundToInt
 
 
@@ -41,7 +42,11 @@ import kotlin.math.roundToInt
 fun MathMatchingScreen(
     navController: NavController,
     difficulty: String,
-    viewModel: MathMatchingViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: MathMatchingViewModel = viewModel(
+        factory = MathMatchingViewModel.MathMatchingViewModelFactory(
+            soundManager = MathSoundManager(LocalContext.current)
+        )
+    )
 ) {
     val context = LocalContext.current
 

@@ -29,14 +29,13 @@ import androidx.navigation.NavController
  */
 @Composable
 fun MazeGameContainer(
-
-    // The difficulty is passed as a parameter, to determine the maze size
     difficulty: String,
     navController: NavController,
-
-    // Uses the MazeViewModelFactory to instantiate a viewmodel
     viewModel: MazeViewModel = viewModel(
-        factory = MazeViewModelFactory(difficulty)
+        factory = MazeViewModelFactory(
+            difficulty = difficulty,
+            soundManager = MazeSoundManager(LocalContext.current)
+        )
     )
 ) {
     val gameState by viewModel.gameState.collectAsState()

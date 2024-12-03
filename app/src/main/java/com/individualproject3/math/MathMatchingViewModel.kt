@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 
 
 /**
@@ -13,9 +14,14 @@ import androidx.lifecycle.ViewModel
  * It is also responsible for determining the difficulty of the equations based on the user's selection.
  * It also keeps track of the user's current and best streaks.
  */
-class MathMatchingViewModel : ViewModel() {
+class MathMatchingViewModel(
+    private val soundManager: MathSoundManager
+) : ViewModel() {
+
     var currentEquation by mutableStateOf<Equation?>(null)
         private set
+
+    private var hasGottenCorrect by mutableStateOf(false)
 
     var isCorrect by mutableStateOf<Boolean?>(null)
         private set
@@ -49,6 +55,7 @@ class MathMatchingViewModel : ViewModel() {
      * Hard difficulty ranges from 1 to 100.
      */
     fun generateEquation() {
+        hasGottenCorrect = false
         val range = difficultyRanges[currentDifficulty] ?: difficultyRanges["easy"]!!
         val operator = operators.random()
 
@@ -83,22 +90,31 @@ class MathMatchingViewModel : ViewModel() {
         isCorrect = null
     }
 
+    /**
+     * Checks if the user's answer is correct only if the equation has not been answered yet.
+     * Updates the current streak and best streak accordingly.
+     * Plays the correct or incorrect sound effect.
+     */
     fun checkAnswer(selectedOperator: String) {
         currentEquation?.let { equation ->
-            val correct = selectedOperator == equation.correctOperator
-            isCorrect = correct
+            if (!hasGottenCorrect) {
+                val correct = selectedOperator == equation.correctOperator
+                isCorrect = correct
 
-            if (correct) {
-                currentStreak++
-                if (currentStreak > bestStreak) {
-                    bestStreak = currentStreak
+                if (correct) {
+                    soundManager.playCorrectSound()
+                    currentStreak++
+                    if (currentStreak > bestStreak) {
+                        bestStreak = currentStreak
+                    }
+                    hasGottenCorrect = true
+                } else {
+                    soundManager.playIncorrectSound()
+                    currentStreak = 0
                 }
-            } else {
-                currentStreak = 0
             }
         }
     }
-}
 
 /**
  * Data class representing an equation.
@@ -113,3 +129,16 @@ data class Equation(
     val result: Int,
     val correctOperator: String
 )
+
+class MathMatchingViewModelFactory(
+    private val soundManager: MathSoundManager
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MathMatchingViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return MathMatchingViewModel(soundManager) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+        }
+    }
+}
